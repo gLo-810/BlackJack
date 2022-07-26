@@ -44,6 +44,23 @@ def deal_card():
 
     return random_card
 
+#Hint 6: Create a function called calculate_score() that takes a List of cards as input
+#and returns the score.
+#Look up the sum() function to help you do this.
+
+def calculate_score(hand):
+    """Calculates score of each player"""
+    score = sum(hand)
+    # Hint 7: Inside calculate_score() check for a blackjack (a hand with only 2 cards: ace + 10) and return 0 instead of the actual score. 0 will represent a blackjack in our game.
+    if score == 21 and len(hand) == 2:
+        return 0
+    # Hint 8: Inside calculate_score() check for an 11 (ace). If the score is already over 21, remove the 11 and replace it with a 1. You might need to look up append() and remove().
+    if 11 in hand and score > 21:
+        hand.remove(11)
+        hand.append(1)
+        return f"Ace score {score}"
+
+    return score
 #Hint 5: Deal the user and computer 2 cards each using deal_card() and append().
 user_cards = []
 computer_cards = []
@@ -51,29 +68,41 @@ computer_cards = []
 for _ in range(2):
     user_cards.append(deal_card())
     computer_cards.append(deal_card())
+while keep_going:
+    #Hint 9: Call calculate_score(). If the computer or the user has a blackjack (0) or if the user's score is over 21, then the game ends.
+    user_score = calculate_score(user_cards)
+    computer_score = calculate_score(computer_cards)
+
+    print(f"User cards: {user_cards}")
+    print(f"Computer's first card: {computer_cards[0]}")
+    print(f"User: {user_score} \nComputer: {computer_score}")
+
+    # Hint 10: If the game has not ended, ask the user if they want to draw another card. If yes, then use the deal_card() function to add another card to the user_cards List. If no, then the game has ended.
+    if user_score == 0 or computer_score == 0 or user_score > 21:
+        print("Game End")
+        keep_going = False
+    else:
+        hit = input("Would you like another card? yes or no: ")
+        # Hint 11: The score will need to be rechecked with every new card drawn and the checks in Hint 9 need to be repeated until the game ends.
+        if hit == 'yes':
+            user_cards.append(deal_card())
+            print(user_cards)
+        else:
+            print("Game End")
+            keep_going = False
+
+    while computer_score != 0 and computer_score < 17:
+        # Hint 12: Once the user is done, it's time to let the computer play. The computer should keep drawing cards as long as it has a score less than 17.
+        computer_cards.append(deal_card())
+        computer_score = calculate_score(computer_cards)
+        print(f"Computer cards after hitting {computer_cards}")
 
 
 
 
 
 
-#Hint 9: Call calculate_score(). If the computer or the user has a blackjack (0) or if the user's score is over 21, then the game ends.
-user_score = calculate_score(user_cards)
-computer_score = calculate_score(computer_cards)
 
-if user_score == 0 or computer_score == 0 or user_score > 21:
-    print("Game End")
-    keep_going = False
-
-print(f"User cards: {user_cards}")
-print(f"Computer cards: {computer_cards}")
-print(f"User: {user_score} \nComputer: {computer_score}")
-
-#Hint 10: If the game has not ended, ask the user if they want to draw another card. If yes, then use the deal_card() function to add another card to the user_cards List. If no, then the game has ended.
-
-#Hint 11: The score will need to be rechecked with every new card drawn and the checks in Hint 9 need to be repeated until the game ends.
-
-#Hint 12: Once the user is done, it's time to let the computer play. The computer should keep drawing cards as long as it has a score less than 17.
 
 #Hint 13: Create a function called compare() and pass in the user_score and computer_score. If the computer and user both have the same score, then it's a draw. If the computer has a blackjack (0), then the user loses. If the user has a blackjack (0), then the user wins. If the user_score is over 21, then the user loses. If the computer_score is over 21, then the computer loses. If none of the above, then the player with the highest score wins.
 
