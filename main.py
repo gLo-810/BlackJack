@@ -34,9 +34,11 @@
 #Hint 4: Create a deal_card() function that uses the List below to *return* a random card.
 #11 is the Ace.
 import random
+from art import logo
+
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-keep_going = True
+
 
 def deal_card():
     """Returns random card"""
@@ -44,9 +46,10 @@ def deal_card():
 
     return random_card
 
-#Hint 6: Create a function called calculate_score() that takes a List of cards as input
-#and returns the score.
-#Look up the sum() function to help you do this.
+
+# Hint 6: Create a function called calculate_score() that takes a List of cards as input
+# and returns the score.
+# Look up the sum() function to help you do this.
 
 def calculate_score(hand):
     """Calculates score of each player"""
@@ -61,35 +64,60 @@ def calculate_score(hand):
         return f"Ace score {score}"
 
     return score
-#Hint 5: Deal the user and computer 2 cards each using deal_card() and append().
-user_cards = []
-computer_cards = []
 
-for _ in range(2):
-    user_cards.append(deal_card())
-    computer_cards.append(deal_card())
-while keep_going:
-    #Hint 9: Call calculate_score(). If the computer or the user has a blackjack (0) or if the user's score is over 21, then the game ends.
-    user_score = calculate_score(user_cards)
-    computer_score = calculate_score(computer_cards)
 
-    print(f"User cards: {user_cards}")
-    print(f"Computer's first card: {computer_cards[0]}")
-    print(f"User: {user_score} \nComputer: {computer_score}")
-
-    # Hint 10: If the game has not ended, ask the user if they want to draw another card. If yes, then use the deal_card() function to add another card to the user_cards List. If no, then the game has ended.
-    if user_score == 0 or computer_score == 0 or user_score > 21:
-        print("Game End")
-        keep_going = False
+# Hint 13: Create a function called compare() and pass in the user_score and computer_score. If the computer and user both have the same score, then it's a draw. If the computer has a blackjack (0), then the user loses. If the user has a blackjack (0), then the user wins. If the user_score is over 21, then the user loses. If the computer_score is over 21, then the computer loses. If none of the above, then the player with the highest score wins.
+def compare(user_hand, computer_hand):
+    if user_hand == computer_hand:
+        return "Draw!"
+    elif computer_hand == 0:
+        return "Computer has Black Jack! You Lose."
+    elif user_hand == 0:
+        return "User has Black Jack. You Win!"
+    elif user_hand > 21:
+        return "User score over 21. You Lose!"
+    elif computer_hand > 21:
+        return "Computer score over 21. You win!"
+    elif user_hand > computer_hand:
+        return "User has higher score You win!"
     else:
-        hit = input("Would you like another card? yes or no: ")
-        # Hint 11: The score will need to be rechecked with every new card drawn and the checks in Hint 9 need to be repeated until the game ends.
-        if hit == 'yes':
-            user_cards.append(deal_card())
-            print(user_cards)
-        else:
-            print("Game End")
+        return "User has lower score. You lose."
+
+def black_jack():
+    print(logo)
+    keep_going = True
+
+    #Hint 5: Deal the user and computer 2 cards each using deal_card() and append().
+    user_cards = []
+    computer_cards = []
+
+    for _ in range(2):
+        user_cards.append(deal_card())
+        computer_cards.append(deal_card())
+
+    while keep_going:
+        #Hint 9: Call calculate_score(). If the computer or the user has a blackjack (0) or if the user's score is over 21, then the game ends.
+        user_score = calculate_score(user_cards)
+        computer_score = calculate_score(computer_cards)
+
+        print(f"User cards: {user_cards}. Current score: {user_score}")
+        print(f"Computer's first card: {computer_cards[0]}")
+
+        # Hint 10: If the game has not ended, ask the user if they want to draw another card. If yes, then use the deal_card() function to add another card to the user_cards List. If no, then the game has ended.
+        if user_score == 0 or computer_score == 0 or user_score > 21:
+            print("Game End - Black Jack")
+            print(f"User: {user_score} Hand {user_cards}\nComputer: {computer_score} Hand {computer_cardsr}")
             keep_going = False
+        else:
+            hit = input("Would you like another card? yes or no: ")
+            # Hint 11: The score will need to be rechecked with every new card drawn and the checks in Hint 9 need to be repeated until the game ends.
+            if hit == 'yes':
+                user_cards.append(deal_card())
+                print(user_cards)
+            else:
+                print("Game End")
+                print(f"User: {user_score} \nComputer: {computer_score}")
+                keep_going = False
 
     while computer_score != 0 and computer_score < 17:
         # Hint 12: Once the user is done, it's time to let the computer play. The computer should keep drawing cards as long as it has a score less than 17.
@@ -99,13 +127,16 @@ while keep_going:
 
 
 
+    print(compare(user_score, computer_score))
 
+    restart = input("Restart Game? y or n: ")
 
+    if restart == 'n':
+        keep_going = False
+        print("Thanks for playing!")
+    else:
+        black_jack()
 
+black_jack()
+    #Hint 14: Ask the user if they want to restart the game. If they answer yes, clear the console and start a new game of blackjack and show the logo from art.py.
 
-
-#Hint 13: Create a function called compare() and pass in the user_score and computer_score. If the computer and user both have the same score, then it's a draw. If the computer has a blackjack (0), then the user loses. If the user has a blackjack (0), then the user wins. If the user_score is over 21, then the user loses. If the computer_score is over 21, then the computer loses. If none of the above, then the player with the highest score wins.
-
-#Hint 14: Ask the user if they want to restart the game. If they answer yes, clear the console and start a new game of blackjack and show the logo from art.py.
-
-#new
