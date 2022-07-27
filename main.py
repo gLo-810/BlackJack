@@ -61,8 +61,6 @@ def calculate_score(hand):
     if 11 in hand and score > 21:
         hand.remove(11)
         hand.append(1)
-        return f"Ace score {score}"
-
     return score
 
 
@@ -71,17 +69,17 @@ def compare(user_hand, computer_hand):
     if user_hand == computer_hand:
         return "Draw!"
     elif computer_hand == 0:
-        return "Computer has Black Jack! You Lose."
+        return f"Computer has Black Jack! You Lose."
     elif user_hand == 0:
-        return "User has Black Jack. You Win!"
+        return f"User has Black Jack. You Win!"
     elif user_hand > 21:
-        return "User score over 21. You Lose!"
+        return f"User score over 21. You Lose!"
     elif computer_hand > 21:
-        return "Computer score over 21. You win!"
+        return f"Computer score over 21. You win!"
     elif user_hand > computer_hand:
-        return "User has higher score You win!"
+        return f"User has higher score You win!"
     else:
-        return "User has lower score. You lose."
+        return f"User has lower score. You lose."
 
 def black_jack():
     print(logo)
@@ -105,29 +103,24 @@ def black_jack():
 
         # Hint 10: If the game has not ended, ask the user if they want to draw another card. If yes, then use the deal_card() function to add another card to the user_cards List. If no, then the game has ended.
         if user_score == 0 or computer_score == 0 or user_score > 21:
-            print("Game End - Black Jack")
-            print(f"User: {user_score} Hand {user_cards}\nComputer: {computer_score} Hand {computer_cardsr}")
             keep_going = False
         else:
-            hit = input("Would you like another card? yes or no: ")
+            hit = input("Would you like another card? y or n: ")
             # Hint 11: The score will need to be rechecked with every new card drawn and the checks in Hint 9 need to be repeated until the game ends.
-            if hit == 'yes':
+            if hit == 'y':
                 user_cards.append(deal_card())
-                print(user_cards)
             else:
-                print("Game End")
-                print(f"User: {user_score} \nComputer: {computer_score}")
                 keep_going = False
 
     while computer_score != 0 and computer_score < 17:
         # Hint 12: Once the user is done, it's time to let the computer play. The computer should keep drawing cards as long as it has a score less than 17.
         computer_cards.append(deal_card())
         computer_score = calculate_score(computer_cards)
-        print(f"Computer cards after hitting {computer_cards}")
 
 
-
+    print(f"User Score: {user_score} Hand: {user_cards}\nComputer Score: {computer_score} Hand: {computer_cards}")
     print(compare(user_score, computer_score))
+
 
     restart = input("Restart Game? y or n: ")
 
